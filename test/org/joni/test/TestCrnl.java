@@ -32,7 +32,7 @@ public class TestCrnl extends Test {
     }
 
     public Encoding encoding() {
-        return ASCIIEncoding.INSTANCE;
+        return new Encoding();
     }
     
     public String testEncoding() {

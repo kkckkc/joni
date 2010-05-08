@@ -31,7 +31,7 @@ public class TestU extends Test {
     }
     
     public Encoding encoding() {
-        return UTF16BEEncoding.INSTANCE;
+        return new Encoding();
     }
     
     public String testEncoding() {
@@ -42,11 +42,11 @@ public class TestU extends Test {
         return Syntax.DEFAULT;
     }
     
-    private int ulen(byte[]bytes) {
+    private int ulen(char[]bytes) {
         return encoding().strByteLengthNull(bytes, 0, bytes.length);
     }
     
-    private String uconv(byte []bytes, int len) {
+    private String uconv(char []bytes, int len) {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < len; i += 2) {
@@ -69,11 +69,11 @@ public class TestU extends Test {
         return sb.toString();
     }
     
-    protected String repr(byte[]bytes) {
+    protected String repr(char[]bytes) {
         return uconv(bytes, ulen(bytes));
     }
     
-    protected int length(byte[]bytes) {
+    protected int length(char[]bytes) {
         return ulen(bytes);
     }
     

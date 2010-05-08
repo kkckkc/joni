@@ -60,7 +60,7 @@ public final class Regex implements RegexState {
     public WarnCallback warnings;
     public MatcherFactory factory;
 
-    final Encoding enc;
+    final Encoding enc = Encoding.INSTANCE;
     int options;
     int userOptions;
     Object userObject;
@@ -77,36 +77,36 @@ public final class Regex implements RegexState {
     int anchorDmax;                         /* (SEMI_)END_BUF anchor distance */
     int subAnchor;                          /* start-anchor for exact or map */
     
-    byte[]exact;
+    char[]exact;
     int exactP;
     int exactEnd;
     
-    byte[]map;                              /* used as BM skip or char-map */
+    char[]map;                              /* used as BM skip or char-map */
     int[]intMap;                            /* BM skip for exact_len > 255 */
     int[]intMapBackward;                    /* BM skip for backward search */
     int dMin;                               /* min-distance of exact or map */
     int dMax;                               /* max-distance of exact or map */
 
-    public Regex(byte[]bytes, int p, int end, int option, Encoding enc) {
+    public Regex(char[]bytes, int p, int end, int option, Encoding enc) {
         this(bytes, p, end, option, enc, Syntax.RUBY, WarnCallback.DEFAULT);
     }
     
     // onig_new
-    public Regex(byte[]bytes, int p, int end, int option, Encoding enc, Syntax syntax) {
+    public Regex(char[]bytes, int p, int end, int option, Encoding enc, Syntax syntax) {
         this(bytes, p, end, option, Config.ENC_CASE_FOLD_DEFAULT, enc, syntax, WarnCallback.DEFAULT);
     }
 
-    public Regex(byte[]bytes, int p, int end, int option, Encoding enc, WarnCallback warnings) {
+    public Regex(char[]bytes, int p, int end, int option, Encoding enc, WarnCallback warnings) {
         this(bytes, p, end, option, enc, Syntax.RUBY, warnings);
     }
     
     // onig_new
-    public Regex(byte[]bytes, int p, int end, int option, Encoding enc, Syntax syntax, WarnCallback warnings) {
+    public Regex(char[]bytes, int p, int end, int option, Encoding enc, Syntax syntax, WarnCallback warnings) {
         this(bytes, p, end, option, Config.ENC_CASE_FOLD_DEFAULT, enc, syntax, warnings);
     }
 
     // onig_alloc_init
-    public Regex(byte[]bytes, int p, int end, int option, int caseFoldFlag, Encoding enc, Syntax syntax, WarnCallback warnings) {
+    public Regex(char[]bytes, int p, int end, int option, int caseFoldFlag, Encoding enc, Syntax syntax, WarnCallback warnings) {
         
         if ((option & (Option.DONT_CAPTURE_GROUP | Option.CAPTURE_GROUP)) ==
             (Option.DONT_CAPTURE_GROUP | Option.CAPTURE_GROUP)) {
@@ -120,7 +120,7 @@ public final class Regex implements RegexState {
             option |= syntax.options;
         }
         
-        this.enc = enc;
+//        this.enc = enc;
         this.options = option;
         this.caseFoldFlag = caseFoldFlag;
         this.warnings = warnings;
@@ -130,11 +130,11 @@ public final class Regex implements RegexState {
         this.warnings = null;
     }
     
-    public Matcher matcher(byte[]bytes) {
+    public Matcher matcher(char[]bytes) {
         return matcher(bytes, 0, bytes.length);
     }
     
-    public Matcher matcher(byte[]bytes, int p, int end) {
+    public Matcher matcher(char[]bytes, int p, int end) {
         return factory.create(this, bytes, p, end);
     }
     
@@ -158,7 +158,7 @@ public final class Regex implements RegexState {
         StringBuilder sb = new StringBuilder();
         
         if (nameTable != null) {
-            sb.append("name table\n");
+            sb.append("name table \n");
             for (NameEntry ne : nameTable) {
                 sb.append("  " + ne + "\n");
             }
@@ -167,7 +167,7 @@ public final class Regex implements RegexState {
         return sb.toString();
     }
     
-    NameEntry nameFind(byte[]name, int nameP, int nameEnd) {
+    NameEntry nameFind(char[]name, int nameP, int nameEnd) {
         if (nameTable != null) return nameTable.get(name, nameP, nameEnd);
         return null;
     }
@@ -190,7 +190,7 @@ public final class Regex implements RegexState {
         return nameTable == null ? 0 : nameTable.size();
     }
 
-    void nameAdd(byte[]name, int nameP, int nameEnd, int backRef, Syntax syntax) {
+    void nameAdd(char[]name, int nameP, int nameEnd, int backRef, Syntax syntax) {
         if (nameEnd - nameP <= 0) throw new ValueException(ErrorMessages.ERR_EMPTY_GROUP_NAME);
 
         NameEntry e = null;
@@ -211,11 +211,11 @@ public final class Regex implements RegexState {
         e.addBackref(backRef);
     }
 
-    NameEntry nameToGroupNumbers(byte[]name, int nameP, int nameEnd) {
+    NameEntry nameToGroupNumbers(char[]name, int nameP, int nameEnd) {
         return nameFind(name, nameP, nameEnd);
     }
 
-    public int nameToBackrefNumber(byte[]name, int nameP, int nameEnd, Region region) {
+    public int nameToBackrefNumber(char[]name, int nameP, int nameEnd, Region region) {
         NameEntry e = nameToGroupNumbers(name, nameP, nameEnd);
         if (e == null) throw new ValueException(ErrorMessages.ERR_UNDEFINED_NAME_REFERENCE,
                                                 new String(name, nameP, nameEnd - nameP));
@@ -250,17 +250,17 @@ public final class Regex implements RegexState {
 
     /* set skip map for Boyer-Moor search */
     void setupBMSkipMap() {
-        byte[]bytes = exact;
+        char[]bytes = exact;
         int p = exactP;
         int end = exactEnd;
         int len = end - p;
 
         if (len < Config.CHAR_TABLE_SIZE) {
             // map/skip
-            if (map == null) map = new byte[Config.CHAR_TABLE_SIZE];
+            if (map == null) map = new char[Config.CHAR_TABLE_SIZE];
 
-            for (int i=0; i<Config.CHAR_TABLE_SIZE; i++) map[i] = (byte)len;
-            for (int i=0; i<len-1; i++) map[bytes[p + i] & 0xff] = (byte)(len - 1 -i); // oxff ??
+            for (int i=0; i<Config.CHAR_TABLE_SIZE; i++) map[i] = (char)len;
+            for (int i=0; i<len-1; i++) map[bytes[p + i] & 0xff] = (char)(len - 1 -i); // oxff ??
         } else {
             if (intMap == null) intMap = new int[Config.CHAR_TABLE_SIZE];
             
@@ -335,7 +335,7 @@ public final class Regex implements RegexState {
         exactP = exactEnd = 0;
     }
     
-    public String encStringToString(byte[]bytes, int p, int end) {
+    public String encStringToString(char[]bytes, int p, int end) {
         StringBuilder sb = new StringBuilder("\nPATTERN: /");
         
         if (enc.minLength() > 1) {
@@ -355,7 +355,7 @@ public final class Regex implements RegexState {
             }
         } else {
             while (p < end) {
-                sb.append(new String(new byte[]{bytes[p]}));
+                sb.append(new String(new char[]{bytes[p]}));
                 p++;
             }
         }

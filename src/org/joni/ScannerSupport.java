@@ -29,7 +29,7 @@ import org.joni.exception.ValueException;
 abstract class ScannerSupport extends IntHolder implements ErrorMessages {
     protected final Encoding enc;       // fast access to encoding
     
-    protected final byte[]bytes;        // pattern
+    protected final char[]bytes;        // pattern
     protected int p;                    // current scanner position
     protected int stop;                 // pattern end (mutable)
     private int lastFetched;            // last fetched value for unfetch support
@@ -39,7 +39,7 @@ abstract class ScannerSupport extends IntHolder implements ErrorMessages {
     private final int end;              // pattern end position for reset() support
     protected int _p;                   // used by mark()/restore() to mark positions
     
-    protected ScannerSupport(Encoding enc, byte[]bytes, int p, int end) {
+    protected ScannerSupport(Encoding enc, char[]bytes, int p, int end) {
         this.enc = enc;
         
         this.bytes = bytes;

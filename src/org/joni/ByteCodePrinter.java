@@ -50,13 +50,13 @@ class ByteCodePrinter {
     
     private void pString(StringBuilder sb, int len, int s) {
         sb.append(":");
-        while (len-- > 0) sb.append(new String(new byte[]{(byte)code[s++]}));
+        while (len-- > 0) sb.append(new String(new char[]{(char)code[s++]}));
     }
     
     private void pLenString(StringBuilder sb, int len, int mbLen, int s) {
         int x = len * mbLen;
         sb.append(":" + len + ":");
-        while (x-- > 0) sb.append(new String(new byte[]{(byte)code[s++]}));
+        while (x-- > 0) sb.append(new String(new char[]{(char)code[s++]}));
     }
     
     public int compiledByteCodeToString(StringBuilder sb, int bp) {
@@ -176,14 +176,14 @@ class ByteCodePrinter {
                 bp += OPSize.LENGTH;
                 sb.append(":" + mbLen + ":" + len + ":");
                 n = len * mbLen;
-                while (n-- > 0) sb.append(new String(new byte[]{(byte)code[bp++]}));
+                while (n-- > 0) sb.append(new String(new char[]{(char)code[bp++]}));
                 break;
                 
             case OPCode.EXACT1_IC:
             case OPCode.EXACT1_IC_SB:
                 final int MAX_CHAR_LENGTH = 6;
-                byte[]bytes = new byte[MAX_CHAR_LENGTH];
-                for (int i = 0; bp + i < code.length && i < MAX_CHAR_LENGTH; i++) bytes[i] = (byte)code[bp + i]; 
+                char[]bytes = new char[MAX_CHAR_LENGTH];
+                for (int i = 0; bp + i < code.length && i < MAX_CHAR_LENGTH; i++) bytes[i] = (char)code[bp + i]; 
                 len = enc.length(bytes, 0, MAX_CHAR_LENGTH);
                 pString(sb, len, bp);
                 bp += len;

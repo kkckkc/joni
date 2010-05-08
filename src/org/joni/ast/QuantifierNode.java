@@ -199,7 +199,7 @@ public final class QuantifierNode extends StateNode {
         other.target = null; // remove target from reduced quantifier
     }
     
-    public int setQuantifier(Node tgt, boolean group, ScanEnvironment env, byte[]bytes, int p, int end) {
+    public int setQuantifier(Node tgt, boolean group, ScanEnvironment env, char[]bytes, int p, int end) {
         if (lower == 1 && upper == 1) return 1;
         
         switch(tgt.getType()) {

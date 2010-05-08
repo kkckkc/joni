@@ -71,7 +71,7 @@ abstract class Compiler implements ErrorMessages {
         int p, prev;
         p = prev = sn.p;
         int end = sn.end;
-        byte[]bytes = sn.bytes;
+        char[]bytes = sn.bytes;
         int prevLen = enc.length(bytes, p, end);
         p += prevLen;
         int slen = 1;
@@ -91,7 +91,7 @@ abstract class Compiler implements ErrorMessages {
         addCompileString(bytes, prev, prevLen, slen, ambig);        
     }
     
-    protected abstract void addCompileString(byte[]bytes, int p, int mbLength, int strLength, boolean ignoreCase);
+    protected abstract void addCompileString(char[]bytes, int p, int mbLength, int strLength, boolean ignoreCase);
     
     protected abstract void compileCClassNode(CClassNode node);
     protected abstract void compileCTypeNode(CTypeNode node);

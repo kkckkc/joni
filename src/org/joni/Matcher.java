@@ -28,9 +28,9 @@ import org.joni.constants.AnchorType;
 
 public abstract class Matcher extends IntHolder {
     protected final Regex regex;
-    protected final Encoding enc;
+    protected final Encoding enc = Encoding.INSTANCE;
 
-    protected final byte[]bytes;
+    protected final char[]bytes;
     protected final int str;
     protected final int end;
 
@@ -43,13 +43,13 @@ public abstract class Matcher extends IntHolder {
     protected int msaBegin;
     protected int msaEnd;
 
-    public Matcher(Regex regex, byte[]bytes) {
+    public Matcher(Regex regex, char[]bytes) {
         this(regex, bytes, 0, bytes.length);
     }
 
-    public Matcher(Regex regex, byte[]bytes, int p, int end) {
+    public Matcher(Regex regex, char[]bytes, int p, int end) {
         this.regex = regex;
-        this.enc = regex.enc;
+//        this.enc = regex.enc;
 
         this.bytes = bytes;
         this.str = p;
@@ -104,7 +104,7 @@ public abstract class Matcher extends IntHolder {
     }
     
     int low, high; // these are the return values
-    private boolean forwardSearchRange(byte[]bytes, int str, int end, int s, int range, IntHolder lowPrev) {
+    private boolean forwardSearchRange(char[]bytes, int str, int end, int s, int range, IntHolder lowPrev) {
         int pprev = -1;
         int p = s;
 
@@ -216,7 +216,7 @@ public abstract class Matcher extends IntHolder {
     }
     
     // low, high
-    private boolean backwardSearchRange(byte[]bytes, int str, int end, int s, int range, int adjrange) {
+    private boolean backwardSearchRange(char[]bytes, int str, int end, int s, int range, int adjrange) {
         range += regex.dMin;
         int p = s;
         

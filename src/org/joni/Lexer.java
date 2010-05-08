@@ -35,7 +35,7 @@ class Lexer extends ScannerSupport {
     protected final Syntax syntax;              // fast access to syntax
     protected final Token token = new Token();  // current token
 
-    protected Lexer(ScanEnvironment env, byte[]bytes, int p, int end) {
+    protected Lexer(ScanEnvironment env, char[]bytes, int p, int end) {
         super(env.enc, bytes, p, end);
         this.env = env;
         this.syntax = env.syntax;
@@ -65,7 +65,9 @@ class Lexer extends ScannerSupport {
         }
         
         int low = scanUnsignedNumber();
-        if (low < 0) newSyntaxException(ErrorMessages.ERR_TOO_BIG_NUMBER_FOR_REPEAT_RANGE);
+        if (low < 0) {
+        	newSyntaxException(ErrorMessages.ERR_TOO_BIG_NUMBER_FOR_REPEAT_RANGE);
+        }
         if (low > Config.MAX_REPEAT_NUM) newSyntaxException(ErrorMessages.ERR_TOO_BIG_NUMBER_FOR_REPEAT_RANGE);
 
         boolean nonLow = false;
@@ -257,7 +259,7 @@ class Lexer extends ScannerSupport {
                     // isNum = 0;
                 }
             } else if (!enc.isWord(c)) {
-                err = ERR_INVALID_CHAR_IN_GROUP_NAME;
+            	err = ERR_INVALID_CHAR_IN_GROUP_NAME;
             }
         }
 
@@ -1376,7 +1378,7 @@ class Lexer extends ScannerSupport {
             if (c == '}') {
                 return enc.propertyNameToCType(bytes, _p, last);
             } else if (c == '(' || c == ')' || c == '{' || c == '|') {
-                throw new CharacterPropertyException(ERR_INVALID_CHAR_PROPERTY_NAME, bytes, _p, last);
+            	throw new RuntimeException(ERR_INVALID_CHAR_PROPERTY_NAME + " " + new String(bytes));
             }
         }
         newInternalException(ERR_PARSER_BUG);

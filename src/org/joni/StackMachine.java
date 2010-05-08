@@ -37,10 +37,10 @@ abstract class StackMachine extends Matcher implements StackType {
     protected final int memStartStk, memEndStk;
 
     // CEC
-    protected byte[] stateCheckBuff; // move to int[] ?
+    protected char[] stateCheckBuff; // move to int[] ?
     int stateCheckBuffSize;    
 
-    protected StackMachine(Regex regex, byte[]bytes, int p , int end) {
+    protected StackMachine(Regex regex, char[]bytes, int p , int end) {
         super(regex, bytes, p, end);
 
         this.stack = regex.stackNeeded ? fetchStack() : null;
@@ -136,12 +136,12 @@ abstract class StackMachine extends Matcher implements StackType {
             
             if (size > 0 && offset < size && size < Config.CHECK_BUFF_MAX_SIZE) {
                 if (size >= STATE_CHECK_BUFF_MALLOC_THRESHOLD_SIZE) {
-                    stateCheckBuff = new byte[size]; 
+                    stateCheckBuff = new char[size]; 
                 } else {
                     // same impl, reduce...
-                    stateCheckBuff = new byte[size];
+                    stateCheckBuff = new char[size];
                 }
-                Arrays.fill(stateCheckBuff, offset, (size - offset), (byte)0);
+                Arrays.fill(stateCheckBuff, offset, (size - offset), (char)0);
                 stateCheckBuffSize = size;                
             } else {
                 stateCheckBuff = null; // reduce

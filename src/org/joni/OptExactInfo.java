@@ -31,7 +31,7 @@ final class OptExactInfo {
     boolean ignoreCase;
     int length;
 
-    final byte s[] = new byte[OPT_EXACT_MAXLEN];
+    final char s[] = new char[OPT_EXACT_MAXLEN];
     
     boolean isFull() {
         return length >= OPT_EXACT_MAXLEN; 
@@ -85,7 +85,7 @@ final class OptExactInfo {
     }
     
     // ?? raw is not used here
-    void concatStr(byte[]bytes, int p, int end, boolean raw, Encoding enc) {
+    void concatStr(char[]bytes, int p, int end, boolean raw, Encoding enc) {
         int i;
         for (i = length; p < end && i < OPT_EXACT_MAXLEN;) {
             int len = enc.length(bytes, p, end);

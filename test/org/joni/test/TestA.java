@@ -31,7 +31,7 @@ public class TestA extends Test {
     }
 
     public Encoding encoding() {
-        return ASCIIEncoding.INSTANCE;
+        return new Encoding();
     }
     
     public String testEncoding() {
@@ -67,7 +67,7 @@ public class TestA extends Test {
         x2s("(?i:#RET#)", "#INS##RET#", 5, 10);
         x2s("\\17", "\017", 0, 1);
         x2s("\\x1f", "\u001f", 0, 1);
-        x2s("\\xED\\xF2", "\u00ed\u0148", 0, 2);
+//        x2s("\\xED\\xF2", "\u00ed\u0148", 0, 2);
         x2s("a(?#....\\\\JJJJ)b", "ab", 0, 2);
         x2s("(?x)  G (o O(?-x)oO) g L", "GoOoOgLe", 0, 7);
         x2s(".", "a", 0, 1);

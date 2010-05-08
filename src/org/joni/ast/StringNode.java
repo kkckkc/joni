@@ -27,24 +27,24 @@ public final class StringNode extends Node implements StringType {
     private static final int NODE_STR_MARGIN = 16;
     private static final int NODE_STR_BUF_SIZE = 24;
     
-    public byte[]bytes;
+    public char[]bytes;
     public int p;
     public int end;
     
     int flag;
     
     public StringNode() {
-        this.bytes = new byte[NODE_STR_BUF_SIZE];
+        this.bytes = new char[NODE_STR_BUF_SIZE];
     }
 
-    public StringNode(byte[]bytes, int p, int end) {
+    public StringNode(char[]bytes, int p, int end) {
         this.bytes = bytes;
         this.p = p;
         this.end = end;
         setShared();
     }
     
-    public StringNode(byte c) {
+    public StringNode(char c) {
         this();
         bytes[end++] = c;
     }
@@ -55,7 +55,7 @@ public final class StringNode extends Node implements StringType {
     public void ensure(int ahead) {
         int len = (end - p) + ahead;
         if (len >= bytes.length) {
-            byte[]tmp = new byte[len + NODE_STR_MARGIN];
+            char[]tmp = new char[len + NODE_STR_MARGIN];
             System.arraycopy(bytes, p, tmp, 0, end - p);
             bytes = tmp;
         }
@@ -66,7 +66,7 @@ public final class StringNode extends Node implements StringType {
     private void modifyEnsure(int ahead) {
         int len = (end - p) + ahead;
         if (isShared()) {
-            byte[]tmp = new byte[len + NODE_STR_MARGIN];
+            char[]tmp = new char[len + NODE_STR_MARGIN];
             System.arraycopy(bytes, p, tmp, 0, end - p);
             bytes = tmp;
             end = end - p;
@@ -74,7 +74,7 @@ public final class StringNode extends Node implements StringType {
             clearShared();
         } else {
             if (len >= bytes.length) {
-                byte[]tmp = new byte[len + NODE_STR_MARGIN];
+                char[]tmp = new char[len + NODE_STR_MARGIN];
                 System.arraycopy(bytes, p, tmp, 0, end - p);
                 bytes = tmp;
             }
@@ -134,27 +134,27 @@ public final class StringNode extends Node implements StringType {
         return false;
     }
 
-    public void set(byte[]bytes, int p, int end) {
+    public void set(char[]bytes, int p, int end) {
         this.bytes = bytes;
         this.p = p;
         this.end = end;
         setShared();
     }
     
-    public void cat(byte[]cat, int catP, int catEnd) {
+    public void cat(char[]cat, int catP, int catEnd) {
         int len = catEnd - catP;
         modifyEnsure(len);
         System.arraycopy(cat, catP, bytes, end, len);
         end += len;
     }
     
-    public void cat(byte c) {
+    public void cat(char c) {
         modifyEnsure(1);
         bytes[end++] = c;
     }
     
     public void clear() {
-        if (bytes.length > NODE_STR_BUF_SIZE) bytes = new byte[NODE_STR_BUF_SIZE];
+        if (bytes.length > NODE_STR_BUF_SIZE) bytes = new char[NODE_STR_BUF_SIZE];
         flag = 0;
         p = end = 0;
     }

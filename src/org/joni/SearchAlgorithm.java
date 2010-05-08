@@ -6,8 +6,8 @@ import org.jcodings.IntHolder;
 public abstract class SearchAlgorithm {
 
     public abstract String getName();
-    public abstract int search(Regex regex, byte[]text, int textP, int textEnd, int textRange);
-    public abstract int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_);
+    public abstract int search(Regex regex, char[]text, int textP, int textEnd, int textRange);
+    public abstract int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_);
     
 
     public static final SearchAlgorithm NONE = new SearchAlgorithm() {
@@ -16,11 +16,11 @@ public abstract class SearchAlgorithm {
             return "NONE";
         }
         
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {
             return textP;
         }
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
             return textP;
         }
         
@@ -32,9 +32,9 @@ public abstract class SearchAlgorithm {
             return "EXACT";
         }
         
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {
             Encoding enc = regex.enc;
-            byte[]target = regex.exact;
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;
             
@@ -63,9 +63,9 @@ public abstract class SearchAlgorithm {
             return -1;            
         }
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
             Encoding enc = regex.enc;
-            byte[]target = regex.exact;
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;            
             
@@ -100,8 +100,8 @@ public abstract class SearchAlgorithm {
             return "EXACT_SB";
         }
         
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {
-            byte[]target = regex.exact;
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;
             
@@ -129,8 +129,8 @@ public abstract class SearchAlgorithm {
             return -1;            
         }
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
-            byte[]target = regex.exact;
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;            
             
@@ -158,7 +158,7 @@ public abstract class SearchAlgorithm {
     
     
     public static final class SLOW_IC extends SearchAlgorithm {
-        private final byte[]buf = new byte[Config.ENC_MBC_CASE_FOLD_MAXLEN];
+        private final char[]buf = new char[Config.ENC_MBC_CASE_FOLD_MAXLEN];
         private final IntHolder holder = new IntHolder();
         private final int caseFoldFlag;
         private final Encoding enc;
@@ -172,8 +172,8 @@ public abstract class SearchAlgorithm {
             return "EXACT_IC";
         }        
         
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {
-            byte[]target = regex.exact;
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;
             
@@ -190,8 +190,8 @@ public abstract class SearchAlgorithm {
             return -1;
         }
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
-            byte[]target = regex.exact;
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;
             
@@ -211,8 +211,8 @@ public abstract class SearchAlgorithm {
             return -1;            
         }
         
-        private boolean lowerCaseMatch(byte[]t, int tP, int tEnd,
-                                       byte[]bytes, int p, int end) {
+        private boolean lowerCaseMatch(char[]t, int tP, int tEnd,
+                                       char[]bytes, int p, int end) {
 
             holder.value = p;
             while (tP < tEnd) {
@@ -237,9 +237,9 @@ public abstract class SearchAlgorithm {
             return "EXACT_IC_SB";
         }        
         
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {            
-            final byte[]toLowerTable = regex.enc.toLowerCaseTable();
-            byte[]target = regex.exact;
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {            
+            final char[]toLowerTable = regex.enc.toLowerCaseTable();
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;
             
@@ -265,9 +265,9 @@ public abstract class SearchAlgorithm {
             return -1;
         }
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
-            final byte[]toLowerTable = regex.enc.toLowerCaseTable();
-            byte[]target = regex.exact;
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+            final char[]toLowerTable = regex.enc.toLowerCaseTable();
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;
             
@@ -300,8 +300,8 @@ public abstract class SearchAlgorithm {
             return "EXACT_BM";
         }        
         
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {
-            byte[]target = regex.exact;
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;            
             
@@ -337,9 +337,9 @@ public abstract class SearchAlgorithm {
         
         private static final int BM_BACKWARD_SEARCH_LENGTH_THRESHOLD = 100;
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
             Encoding enc = regex.enc;
-            byte[]target = regex.exact;
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;
             
@@ -374,7 +374,7 @@ public abstract class SearchAlgorithm {
         }
         
         
-        private void setBmBackwardSkip(Regex regex, byte[]bytes, int p, int end) {
+        private void setBmBackwardSkip(Regex regex, char[]bytes, int p, int end) {
             int[] skip;
             if (regex.intMapBackward == null) {
                 skip = new int[Config.CHAR_TABLE_SIZE];
@@ -396,9 +396,9 @@ public abstract class SearchAlgorithm {
             return "EXACT_BM_NOT_REV";
         }        
         
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {
             Encoding enc = regex.enc;
-            byte[]target = regex.exact;
+            char[]target = regex.exact;
             int targetP = regex.exactP;
             int targetEnd = regex.exactEnd;              
             
@@ -456,7 +456,7 @@ public abstract class SearchAlgorithm {
             return -1;            
         }
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
             return BM.searchBackward(regex, text, textP, adjustText, textEnd, textStart, s_, range_);
         }
     };
@@ -469,9 +469,9 @@ public abstract class SearchAlgorithm {
         }        
         
         // TODO: check 1.9 inconsistent calls to map_search
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {
             Encoding enc = regex.enc;
-            byte[]map = regex.map;
+            char[]map = regex.map;
             int s = textP;
 
             while (s < textRange) {
@@ -481,9 +481,9 @@ public abstract class SearchAlgorithm {
             return -1;
         }
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
             Encoding enc = regex.enc;
-            byte[]map = regex.map;
+            char[]map = regex.map;
             int s = textStart;
 
             if (s >= textEnd) s = textEnd - 1; // multibyte safe ? 
@@ -501,8 +501,8 @@ public abstract class SearchAlgorithm {
             return "MAP_SB";
         }        
         
-        public final int search(Regex regex, byte[]text, int textP, int textEnd, int textRange) {
-            byte[]map = regex.map;
+        public final int search(Regex regex, char[]text, int textP, int textEnd, int textRange) {
+            char[]map = regex.map;
             int s = textP;
             
             while (s < textRange) {
@@ -512,8 +512,8 @@ public abstract class SearchAlgorithm {
             return -1;
         }
         
-        public final int searchBackward(Regex regex, byte[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
-            byte[]map = regex.map;
+        public final int searchBackward(Regex regex, char[]text, int textP, int adjustText, int textEnd, int textStart, int s_, int range_) {
+            char[]map = regex.map;
             int s = textStart;
 
             if (s >= textEnd) s = textEnd - 1; 

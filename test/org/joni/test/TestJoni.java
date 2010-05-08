@@ -29,12 +29,12 @@ public class TestJoni extends TestCase {
         testJoniTest(testa);
     }
     
-    public void testEUCJP() {
-        testJoniTest(testc);
-    }
-
-    public void testUnicode() {
-        testJoniTest(testu);
-        testJoniTest(testnsu8);
-    }
+//    public void testEUCJP() {
+//        testJoniTest(testc);
+//    }
+//
+//    public void testUnicode() {
+//        testJoniTest(testu);
+//        testJoniTest(testnsu8);
+//    }
 }

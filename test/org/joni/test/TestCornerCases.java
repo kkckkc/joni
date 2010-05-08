@@ -33,7 +33,7 @@ public class TestCornerCases extends Test {
     }
 
     public Encoding encoding() {
-        return ASCIIEncoding.INSTANCE;
+        return new Encoding();
     }
     
     public String testEncoding() {
@@ -45,8 +45,8 @@ public class TestCornerCases extends Test {
     }   
 
     public void test() {
-        byte[] reg = "l.".getBytes();
-        byte[] str = "hello,lo".getBytes();
+        char[] reg = "l.".toCharArray();
+        char[] str = "hello,lo".toCharArray();
 
         Regex p = new Regex(reg,0,reg.length,Option.DEFAULT,ASCIIEncoding.INSTANCE,Syntax.DEFAULT);
         int result = p.matcher(str, 0, str.length).search(3, 0, Option.NONE);

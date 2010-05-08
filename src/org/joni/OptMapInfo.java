@@ -28,7 +28,7 @@ final class OptMapInfo {
     final OptAnchorInfo anchor = new OptAnchorInfo();
     
     int value;                                      /* weighted value */
-    final byte map[] = new byte[Config.CHAR_TABLE_SIZE];
+    final char map[] = new char[Config.CHAR_TABLE_SIZE];
     
     void clear() {
         mmd.clear();
@@ -45,7 +45,7 @@ final class OptMapInfo {
         System.arraycopy(other.map, 0, map, 0, other.map.length);
     }
     
-    void addChar(byte c, Encoding enc) {
+    void addChar(char c, Encoding enc) {
         int c_ = c & 0xff;
         if (map[c_] == 0) {
             map[c_] = 1;
@@ -53,13 +53,13 @@ final class OptMapInfo {
         }
     }
     
-    void addCharAmb(byte[]bytes, int p, int end, Encoding enc, int caseFoldFlag) {
+    void addCharAmb(char[]bytes, int p, int end, Encoding enc, int caseFoldFlag) {
         addChar(bytes[p], enc);
         
         caseFoldFlag &= ~Config.INTERNAL_ENC_CASE_FOLD_MULTI_CHAR;
         CaseFoldCodeItem[]items = enc.caseFoldCodesByString(caseFoldFlag, bytes, p, end);
 
-        byte[] buf = new byte[Config.ENC_CODE_TO_MBC_MAXLEN];
+        char[] buf = new char[Config.ENC_CODE_TO_MBC_MAXLEN];
         for (int i=0; i<items.length; i++) {
             enc.codeToMbc(items[i].code[0], buf, 0);
             addChar(buf[0], enc);

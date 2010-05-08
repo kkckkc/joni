@@ -55,7 +55,7 @@ import org.joni.constants.TargetInfo;
 
 final class Analyser extends Parser {
     
-    protected Analyser(ScanEnvironment env, byte[]bytes, int p, int end) {
+    protected Analyser(ScanEnvironment env, char[]bytes, int p, int end) {
         super(env, bytes, p, end);
     }
     
@@ -161,7 +161,7 @@ final class Analyser extends Parser {
         }
 
         new ArrayCompiler(this).compile();
-        //new AsmCompiler(this).compile();
+//        new AsmCompiler(this).compile();
 
         if (Config.DEBUG_COMPILE) {
             if (Config.USE_NAMED_GROUP) Config.log.print(regex.nameTableToString());
@@ -1261,7 +1261,9 @@ final class Analyser extends Parser {
                         cn.groupNum = ne.backRef1; // ne.backNum == 1 ? ne.backRef1 : ne.backRefs[0]; // ??? need to check ?
                         // !set_call_attr:!
                         cn.target = env.memNodes[cn.groupNum]; // no setTarget in call nodes!
-                        if (cn.target == null) newValueException(ERR_UNDEFINED_NAME_REFERENCE, cn.nameP, cn.nameEnd);
+                        if (cn.target == null) 
+                        	newValueException(ERR_UNDEFINED_NAME_REFERENCE, cn.nameP, cn.nameEnd);
+                        
                         
                         ((EncloseNode)cn.target).setCalled();
                         env.btMemStart = BitStatus.bsOnAt(env.btMemStart, cn.groupNum);
@@ -1391,18 +1393,18 @@ final class Analyser extends Parser {
     private void updateStringNodeCaseFold(Node node) {
         StringNode sn = (StringNode)node;
         
-        byte[]sbuf = new byte[sn.length() << 1];
+        char[]sbuf = new char[sn.length() << 1];
         int sp = 0;
         
         value = sn.p;
         int end = sn.end;
         
-        byte[]buf = new byte[Config.ENC_MBC_CASE_FOLD_MAXLEN];
+        char[]buf = new char[Config.ENC_MBC_CASE_FOLD_MAXLEN];
         while (value < end) {
             int len = enc.mbcCaseFold(regex.caseFoldFlag, sn.bytes, this, end, buf);
             for (int i=0; i<len; i++) {
                 if (sp >= sbuf.length) {
-                    byte[]tmp = new byte[sbuf.length << 1];
+                    char[]tmp = new char[sbuf.length << 1];
                     System.arraycopy(sbuf, 0, tmp, 0, sbuf.length);
                     sbuf = tmp;
                 }
@@ -1413,7 +1415,7 @@ final class Analyser extends Parser {
         sn.set(sbuf, 0, sp);
     }
     
-    private Node expandCaseFoldMakeRemString(byte[]bytes, int p, int end) {
+    private Node expandCaseFoldMakeRemString(char[]bytes, int p, int end) {
         StringNode node = new StringNode(bytes, p, end);
         
         updateStringNodeCaseFold(node);
@@ -1423,7 +1425,7 @@ final class Analyser extends Parser {
     }
     
     private boolean expandCaseFoldStringAlt(int itemNum, CaseFoldCodeItem[]items,
-                                              byte[]bytes, int p, int slen, int end, Node[]node) {
+                                              char[]bytes, int p, int slen, int end, Node[]node) {
         boolean varlen = false;
         
         for (int i=0; i<itemNum; i++) {
@@ -1486,7 +1488,7 @@ final class Analyser extends Parser {
 
         if (sn.isAmbig() || sn.length() <= 0) return;
 
-        byte[]bytes = sn.bytes;
+        char[]bytes = sn.bytes;
         int p = sn.p;
         int end = sn.end;
         int altNum = 1;
@@ -1956,7 +1958,7 @@ final class Analyser extends Parser {
                 for (int i=0; i<BitSet.SINGLE_BYTE_SIZE; i++) {
                     boolean z = cc.bs.at(i);
                     if ((z && !cc.isNot()) || (!z && cc.isNot())) {
-                        opt.map.addChar((byte)i, enc);
+                        opt.map.addChar((char)i, enc);
                     }
                 }
                 opt.length.set(1, 1);
@@ -1976,13 +1978,13 @@ final class Analyser extends Parser {
                     if (cn.not) {
                         for (int i=0; i<BitSet.SINGLE_BYTE_SIZE; i++) {
                             if (!enc.isWord(i)) {
-                                opt.map.addChar((byte)i, enc);
+                                opt.map.addChar((char)i, enc);
                             }
                         }
                     } else {
                         for (int i=0; i<BitSet.SINGLE_BYTE_SIZE; i++) {                        
                             if (enc.isWord(i)) {
-                                opt.map.addChar((byte)i, enc);
+                                opt.map.addChar((char)i, enc);
                             }
                         }
                     }

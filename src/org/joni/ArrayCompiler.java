@@ -170,7 +170,7 @@ final class ArrayCompiler extends Compiler {
         }
     }
 
-    private int addCompileStringlength(byte[]bytes, int p, int mbLength, int strLength, boolean ignoreCase) {
+    private int addCompileStringlength(char[]bytes, int p, int mbLength, int strLength, boolean ignoreCase) {
         int op = selectStrOpcode(mbLength, strLength, ignoreCase);
         
         int len = OPSize.OPCODE;
@@ -183,7 +183,7 @@ final class ArrayCompiler extends Compiler {
     }
 
     @Override
-    protected final void addCompileString(byte[]bytes, int p, int mbLength, int strLength, boolean ignoreCase) {
+    protected final void addCompileString(char[]bytes, int p, int mbLength, int strLength, boolean ignoreCase) {
         int op = selectStrOpcode(mbLength, strLength, ignoreCase);
         addOpcode(op);
         
@@ -207,7 +207,7 @@ final class ArrayCompiler extends Compiler {
         int p, prev;
         p = prev = sn.p;
         int end = sn.end;
-        byte[]bytes = sn.bytes;
+        char[]bytes = sn.bytes;
         int prevLen = enc.length(bytes, p, end);
         p += prevLen;
         
@@ -1142,7 +1142,7 @@ final class ArrayCompiler extends Compiler {
         regex.operands[regex.operandLength++] = o;
     }
     
-    private void addBytes(byte[]bytes, int p ,int length) {
+    private void addBytes(char[]bytes, int p ,int length) {
         ensure(regex.codeLength + length);
         int end = p + length;
         

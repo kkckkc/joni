@@ -32,7 +32,7 @@ public class TestC extends Test {
     }
 
     public Encoding encoding() {
-        return EUCJPEncoding.INSTANCE;
+        return new Encoding();
     }
     
     public String testEncoding() {
