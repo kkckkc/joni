@@ -17,45 +17,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
  * SOFTWARE.
  */
-package org.joni.test;
+package org.jcodings;
 
-import org.jcodings.Encoding;
-import org.jcodings.specific.ASCIIEncoding;
-import org.joni.Config;
-import org.joni.Option;
-import org.joni.Regex;
-import org.joni.Syntax;
+import org.jcodings.exception.EncodingException;
+import org.jcodings.exception.ErrorMessages;
 
-public class TestCornerCases extends Test {
-    public int option() {
-        return Option.DEFAULT;
-    }
+public abstract class SingleByteEncoding extends AbstractEncoding {
 
-    public Encoding encoding() {
-        return new Encoding();
-    }
+    protected final byte[]LowerCaseTable; 
     
-    public String testEncoding() {
-        return "cp1250";
+    protected SingleByteEncoding(String name, short[]CTypeTable, byte[]LowerCaseTable) {
+        super(name, 1, 1, CTypeTable);
+        this.LowerCaseTable = LowerCaseTable;
     }
 
-    public Syntax syntax() {
-        return Syntax.DEFAULT;
-    }   
-
-    public void test() {
-        char[] reg = "l.".toCharArray();
-        char[] str = "hello,lo".toCharArray();
-
-        Regex p = new Regex(reg,0,reg.length,Option.DEFAULT,ASCIIEncoding.INSTANCE,Syntax.DEFAULT);
-        int result = p.matcher(str, 0, str.length).search(3, 0, Option.NONE);
-        if(result != 3) {
-            Config.log.println("FAIL: /l./ 'hello,lo' - with reverse, 3,0");
-            nfail++;
-        }
+    protected SingleByteEncoding(String name, short[]CTypeTable, byte[]LowerCaseTable, boolean isDummy) {
+        super(name, 1, 1, CTypeTable, isDummy);
+        this.LowerCaseTable = LowerCaseTable;
     }
-    
-    public static void main(String[] args) throws Throwable{
-        new TestCornerCases().run();
-    }
+
 }

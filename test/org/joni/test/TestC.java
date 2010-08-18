@@ -19,11 +19,10 @@
  */
 package org.joni.test;
 
-import org.joni.Option;
-import org.joni.Syntax;
 import org.jcodings.Config;
 import org.jcodings.Encoding;
-import org.jcodings.specific.EUCJPEncoding;
+import org.joni.Option;
+import org.joni.Syntax;
 
 public class TestC extends Test {
 

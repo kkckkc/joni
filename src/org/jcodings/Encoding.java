@@ -8,7 +8,7 @@ import org.jcodings.exception.EncodingException;
 import org.jcodings.exception.ErrorMessages;
 import org.joni.ApplyCaseFoldArg;
 
-public final class Encoding {
+public class Encoding {
 	public static final Encoding INSTANCE = new Encoding();  
 
 	public static final char NEW_LINE = '\n';
@@ -43,7 +43,7 @@ public final class Encoding {
         return digitVal(c);
     }
 
-	public final int length(char[] bytes, int p, int stop) {
+	public  int length(char[] bytes, int p, int stop) {
 	    return 1;
     }
 

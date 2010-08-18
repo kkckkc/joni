@@ -1,7 +1,6 @@
 package org.joni.bench;
 
 import org.jcodings.Encoding;
-import org.jcodings.specific.ASCIIEncoding;
 import org.joni.Option;
 import org.joni.Regex;
 import org.joni.Syntax;

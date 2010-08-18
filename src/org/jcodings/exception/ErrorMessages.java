@@ -17,45 +17,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
  * SOFTWARE.
  */
-package org.joni.test;
+package org.jcodings.exception;
 
-import org.jcodings.Encoding;
-import org.jcodings.specific.ASCIIEncoding;
-import org.joni.Config;
-import org.joni.Option;
-import org.joni.Regex;
-import org.joni.Syntax;
+public interface ErrorMessages {
+    final String ERR_TYPE_BUG = "undefined type (bug)";
 
-public class TestCornerCases extends Test {
-    public int option() {
-        return Option.DEFAULT;
-    }
+    final String ERR_TOO_BIG_WIDE_CHAR_VALUE = "too big wide-char value";
+    final String ERR_TOO_LONG_WIDE_CHAR_VALUE = "too long wide-char value";
 
-    public Encoding encoding() {
-        return new Encoding();
-    }
+    final String ERR_INVALID_CHAR_PROPERTY_NAME = "invalid character property name {%n}";
+    final String ERR_INVALID_CODE_POINT_VALUE = "invalid code point value";
+
+    final String ERR_ENCODING_CLASS_DEF_NOT_FOUND = "encoding class <%n> not found";
+    final String ERR_ENCODING_LOAD_ERROR = "problem loading encoding <%n>";
+
+    final String ERR_ILLEGAL_CHARACTER = "illegal character";
     
-    public String testEncoding() {
-        return "cp1250";
-    }
-
-    public Syntax syntax() {
-        return Syntax.DEFAULT;
-    }   
-
-    public void test() {
-        char[] reg = "l.".toCharArray();
-        char[] str = "hello,lo".toCharArray();
-
-        Regex p = new Regex(reg,0,reg.length,Option.DEFAULT,ASCIIEncoding.INSTANCE,Syntax.DEFAULT);
-        int result = p.matcher(str, 0, str.length).search(3, 0, Option.NONE);
-        if(result != 3) {
-            Config.log.println("FAIL: /l./ 'hello,lo' - with reverse, 3,0");
-            nfail++;
-        }
-    }
-    
-    public static void main(String[] args) throws Throwable{
-        new TestCornerCases().run();
-    }
+    final String ERR_ENCODING_ALREADY_REGISTERED = "encoding already registerd <%n>";
+    final String ERR_ENCODING_ALIAS_ALREADY_REGISTERED = "encoding alias already registerd <%n>";
+    final String ERR_ENCODING_REPLICA_ALREADY_REGISTERED = "encoding replica already registerd <%n>";
+    final String ERR_NO_SUCH_ENCODNG = "no such encoding <%n>";
+    final String ERR_COULD_NOT_REPLICATE = "could not replicate <%n> encoding";
 }

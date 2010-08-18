@@ -17,45 +17,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
  * SOFTWARE.
  */
-package org.joni.test;
+package org.jcodings.specific;
 
-import org.jcodings.Encoding;
-import org.jcodings.specific.ASCIIEncoding;
-import org.joni.Config;
-import org.joni.Option;
-import org.joni.Regex;
-import org.joni.Syntax;
+import org.jcodings.SingleByteEncoding;
+import org.jcodings.ascii.AsciiTables;
 
-public class TestCornerCases extends Test {
-    public int option() {
-        return Option.DEFAULT;
+public final class ASCIIEncoding extends SingleByteEncoding {
+
+    protected ASCIIEncoding() {
+        super("ASCII-8BIT", AsciiTables.AsciiCtypeTable, AsciiTables.ToLowerCaseTable);
     }
 
-    public Encoding encoding() {
-        return new Encoding();
-    }
-    
-    public String testEncoding() {
-        return "cp1250";
+    protected ASCIIEncoding(boolean isDummy) {
+        super(isDummy ? "DUMMY" : "ASCII-8BIT", AsciiTables.AsciiCtypeTable, AsciiTables.ToLowerCaseTable, isDummy);
     }
 
-    public Syntax syntax() {
-        return Syntax.DEFAULT;
-    }   
-
-    public void test() {
-        char[] reg = "l.".toCharArray();
-        char[] str = "hello,lo".toCharArray();
-
-        Regex p = new Regex(reg,0,reg.length,Option.DEFAULT,ASCIIEncoding.INSTANCE,Syntax.DEFAULT);
-        int result = p.matcher(str, 0, str.length).search(3, 0, Option.NONE);
-        if(result != 3) {
-            Config.log.println("FAIL: /l./ 'hello,lo' - with reverse, 3,0");
-            nfail++;
-        }
-    }
-    
-    public static void main(String[] args) throws Throwable{
-        new TestCornerCases().run();
-    }
+    public static final ASCIIEncoding INSTANCE = new ASCIIEncoding();
+    public static final ASCIIEncoding DUMMY = new ASCIIEncoding(true);
 }

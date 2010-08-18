@@ -19,10 +19,9 @@
  */
 package org.joni.test;
 
+import org.jcodings.Encoding;
 import org.joni.Option;
 import org.joni.Syntax;
-import org.jcodings.Encoding;
-import org.jcodings.specific.NonStrictUTF8Encoding;
 
 public class TestNSU8 extends Test {
 
